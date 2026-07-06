@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Parking Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo"> 
+                    <i class="fas fa-car"></i>
+                    <h1>Smart Parking Detection</h1>
+                </div>
+                <div class="status-indicator"> 
+                    <div class="status-dot" id="statusDot"></div>
+                    <span id="statusText">Disconnected</span>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-upload"></i> Upload Video</h2>
+                        <p>Upload a video file to start parking detection</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-content">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <h3>Drop your video here</h3>
+                                <p>or click to browse</p>
+                                <input type="file" id="videoInput" accept="video/*" hidden>
+                                <button class="btn btn-primary" onclick="document.getElementById('videoInput').click()">
+                                    Choose Video File
+                                </button>
+                            </div>
+                        </div>
+                        <div class="upload-progress" id="uploadProgress" style="display: none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                            <span class="progress-text" id="progressText">Uploading...</span>
+                        </div>
+                        <div class="video-info" id="videoInfo" style="display: none;">
+                            <div class="info-item">
+                                <i class="fas fa-file-video"></i>
+                                <span id="fileName"></span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                <span id="videoDuration"></span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-play"></i>
+                                <span id="videoFPS"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Control Section -->
+            <section class="control-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-cogs"></i> Detection Controls</h2>
+                        <p>Manage parking space detection</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="controls-grid">
+                            <div class="control-group">
+                                <label>Parking Spaces</label>
+                                <div class="space-counter">
+                                    <span id="totalSpaces">0</span>
+                                    <span>Total Spaces</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <button class="btn btn-success" id="startBtn" onclick="startDetection()">
+                                    <i class="fas fa-play"></i> Start Detection
+                                </button>
+                                <button class="btn btn-danger" id="stopBtn" onclick="stopDetection()" disabled>
+                                    <i class="fas fa-stop"></i> Stop Detection
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Preview Section -->
+             <div class="spacer"></div>
+            <section class="preview-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-eye"></i> Live Detection Preview</h2>
+                        <div class="detection-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Free Spaces</span>
+                                <span class="stat-value free" id="freeSpaces">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Occupied</span>
+                                <span class="stat-value occupied" id="occupiedSpaces">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Total</span>
+                                <span class="stat-value total" id="totalSpacesDisplay">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="video-container">
+                            <div class="video-placeholder" id="videoPlaceholder">
+                                <i class="fas fa-video"></i>
+                                <h3>No Video Loaded</h3>
+                                <p>Upload a video to start detection</p>
+                            </div>
+                            <img id="detectionImage" style="display: none;" alt="Detection Preview">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Instructions Section -->
+            <section class="instructions-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-info-circle"></i> How to Use</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="instructions-grid">
+                            <div class="instruction-item">
+                                <div class="instruction-icon">
+                                    <i class="fas fa-upload"></i>
+                                </div> 
+                                <div></div>
+                                <div class="instruction-content">
+                                    <h3>1. Upload Video</h3>
+                                    <p>Upload a video file of your parking lot using the upload section above.</p>
+                                </div> 
+                            </div>
+                            <div class="instruction-item">
+                                <div class="instruction-icon">
+                                    <i class="fas fa-mouse-pointer"></i>
+                                </div>
+                                <div class="instruction-content">
+                                    <h3>2. Mark Spaces</h3>
+                                    <p>Use the original ParkingSpacePicker.py to mark parking spaces on your image.</p>
+                                </div>
+                            </div>
+                            <div class="instruction-item">
+                                <div class="instruction-icon">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <div class="instruction-content">
+                                    <h3>3. Start Detection</h3>
+                                    <p>Click "Start Detection" to begin real-time parking space monitoring.</p>
+                                </div>
+                            </div>
+                            <div class="instruction-item">
+                                <div class="instruction-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="instruction-content">
+                                    <h3>4. Monitor Results</h3>
+                                    <p>Watch the live preview and statistics to see parking space occupancy.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 Smart Parking Detection System. Built with Flask and OpenCV.</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
