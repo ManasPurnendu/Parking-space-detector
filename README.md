@@ -65,9 +65,9 @@ Built with **Python, OpenCV, and Flask-SocketIO**, this system accurately identi
 
 ## 📸 Screenshots
 
-*(You can add screenshots of your application here after pushing to GitHub. For example:)*
-- `![Dashboard](docs/dashboard.png)`
-- `![Live Detection](docs/detection.png)`
+![Dashboard Upload Screen](docs/dashboard.png)
+![Live Detection Statistics](docs/detection1.png)
+![Live Detection Preview](docs/detection2.png)
 
 ---
 
