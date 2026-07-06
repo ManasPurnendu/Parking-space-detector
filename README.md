@@ -1,4 +1,4 @@
-# 🚗 Smart Car Parking Detection System
+# 🚗 Parking Space Detector
 
 A real-time, computer vision-based web application designed to automatically detect and monitor available parking spaces from video feeds or camera streams. 
 
@@ -23,7 +23,7 @@ Built with **Python, OpenCV, and Flask-SocketIO**, this system accurately identi
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/car-parking-detection.git
+   git clone https://github.com/ManasPurnendu/parking-space-detector.git
    cd car-parking-detection
    ```
 
